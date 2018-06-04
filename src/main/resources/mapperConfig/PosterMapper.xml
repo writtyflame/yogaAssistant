@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flame.yogaassistant.mapper.PosterMapper">
+
+    <select id="queryPosterList" resultType="com.flame.yogaassistant.domain.Poster">
+        SELECT  *
+        FROM t_poster
+        WHERE isDelete=0
+        ORDER BY createTime
+        DESC
+    </select>
+
+    <select id="queryPosterById" resultType="com.flame.yogaassistant.domain.Poster">
+        SELECT  *
+        FROM t_poster
+        WHERE posterId = #{posterId} and  isDelete=0
+    </select>
+
+    <insert id="insertPoster" useGeneratedKeys="true" keyProperty="posterId"
+            keyColumn="posterId" parameterType="com.flame.yogaassistant.domain.Poster">
+        INSERT INTO
+        t_poster (title,picUrl,isDelete,createTime,updateTime)
+        VALUES (#{usertitleName},#{picUrl},0,#{createTime},#{updateTime})
+    </insert>
+
+    <update id="updatePoster" parameterType="com.flame.yogaassistant.domain.Poster">
+        UPDATE t_poster
+        <set>
+            <if test="title != null">title = #{title}</if>
+            <if test="picUrl != null">picUrl = #{picUrl}</if>
+            <if test="isDelete != null">, isDelete = #{isDelete}</if>
+            <if test="updateTime != null">, updateTime = #{updateTime}</if>
+        </set>
+        WHERE posterId = #{posterId} and isDelete=0
+    </update>
+
+    <delete id="deletePosterById">
+        UPDATE t_poster
+        <set>
+            isDelete = #{isDelete}
+        </set>
+        WHERE posterId = #{posterId} and isDelete=0
+    </delete>
+
+</mapper>

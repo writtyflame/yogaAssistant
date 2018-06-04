@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flame.yogaassistant.mapper.ClassTeacherMapper">
+
+    <select id="queryClassTeacher" resultType="com.flame.yogaassistant.domain.ClassTeacher">
+        SELECT  *
+        FROM t_class_teacher
+        WHERE isDelete=0
+        ORDER BY createTime
+        DESC
+    </select>
+
+    <select id="queryClassTeacherById" resultType="com.flame.yogaassistant.domain.ClassTeacher">
+        SELECT  *
+        FROM t_class_teacher
+        WHERE id = #{id} and isDelete=0
+    </select>
+
+    <insert id="insertClassTeacher" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.flame.yogaassistant.domain.ClassTeacher">
+        INSERT INTO
+        t_class_teacher (classId,userId, fee,isDelete,createTime,updateTime)
+        VALUES (#{classId},#{userId},#{fee},0,#{createTime},#{updateTime})
+    </insert>
+
+    <update id="updateClassTeacher" parameterType="com.flame.yogaassistant.domain.ClassTeacher">
+        UPDATE t_class_teacher
+        <set>
+            <if test="classId != null">classId = #{classId}</if>
+            <if test="userId != null">userId = #{userId}</if>
+            <if test="fee != null">, fee = #{fee}</if>
+            <if test="isDelete != null">, isDelete = #{isDelete}</if>
+            <if test="updateTime != null">, updateTime = #{updateTime}</if>
+        </set>
+        WHERE id = #{id} and isDelete=0
+    </update>
+
+    <delete id="deleteClassTeacherById">
+        UPDATE t_class_teacher
+        <set>
+            isDelete = #{isDelete}
+        </set>
+        WHERE id = #{id} and isDelete=0
+    </delete>
+
+</mapper>

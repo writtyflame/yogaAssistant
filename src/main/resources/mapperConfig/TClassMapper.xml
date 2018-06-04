@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flame.yogaassistant.mapper.TClassMapper">
+
+    <select id="queryClass" resultType="com.flame.yogaassistant.domain.TClass">
+        SELECT  *
+        FROM t_class
+        WHERE isDelete=0
+        ORDER BY createTime
+        DESC
+    </select>
+
+    <select id="queryClassById" resultType="com.flame.yogaassistant.domain.TClass">
+        SELECT  *
+        FROM t_class
+        WHERE classId = #{classId} and isDelete=0
+    </select>
+
+    <insert id="insertClass" useGeneratedKeys="true" keyProperty="classId"
+            keyColumn="classId" parameterType="com.flame.yogaassistant.domain.TClass">
+        INSERT INTO
+        t_class (className,teacherIds,provinceId, cityId, areaId, address,latitude,longitude,classTime,content,state,fee,deposit,publishId,isDelete,createTime,updateTime)
+        VALUES (#{className},#{teacherIds},#{provinceId},#{cityId},#{areaId},#{address},#{latitude},#{longitude},#{classTime},#{content},#{state},#{fee},#{deposit},#{publishId},0,#{createTime},#{updateTime})
+    </insert>
+
+    <update id="updateClass" parameterType="com.flame.yogaassistant.domain.TClass">
+        UPDATE t_class
+        <set>
+            <if test="className != null">className = #{className}</if>
+            <if test="teacherIds != null">teacherIds = #{teacherIds}</if>
+            <if test="provinceId != null">provinceId = #{provinceId}</if>
+            <if test="cityId != null">, cityId = #{cityId}</if>
+            <if test="areaId != null">, areaId = #{areaId}</if>
+            <if test="address != null">, address = #{address}</if>
+            <if test="latitude != null">, latitude = #{latitude}</if>
+            <if test="longitude != null">, longitude = #{longitude}</if>
+            <if test="classTime != null">, classTime = #{classTime}</if>
+            <if test="content != null">, content = #{content}</if>
+            <if test="state != null">, state = #{state}</if>
+            <if test="fee != null">, fee = #{fee}</if>
+            <if test="deposit != null">, deposit = #{deposit}</if>
+            <if test="publishId != null">, publishId = #{publishId}</if>
+            <if test="isDelete != null">, isDelete = #{isDelete}</if>
+            <if test="updateTime != null">, updateTime = #{updateTime}</if>
+        </set>
+        WHERE classId = #{classId} and isDelete=0
+    </update>
+
+    <delete id="deleteClassById">
+        UPDATE t_class
+        <set>
+            isDelete = #{isDelete}
+        </set>
+        WHERE classId = #{classId} and isDelete=0
+    </delete>
+
+</mapper>
